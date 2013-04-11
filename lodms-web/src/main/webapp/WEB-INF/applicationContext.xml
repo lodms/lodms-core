@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <context:component-scan base-package="at.punkt.lodms.web"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <value>classpath:application.properties</value>
+            </array>
+        </property>
+    </bean>
+    
+    <bean id="applicationVersion" class="java.lang.String">
+        <constructor-arg value="${application.version}" />
+    </bean>
+    
+    <bean id="extractors" class="org.springframework.beans.factory.serviceloader.ServiceListFactoryBean">
+        <property name="serviceType" value="at.punkt.lodms.spi.extract.Extractor"/>
+    </bean>
+
+    <bean id="transformers" class="org.springframework.beans.factory.serviceloader.ServiceListFactoryBean">
+        <property name="serviceType" value="at.punkt.lodms.spi.transform.Transformer"/>
+    </bean>
+
+    <bean id="loaders" class="org.springframework.beans.factory.serviceloader.ServiceListFactoryBean">
+        <property name="serviceType" value="at.punkt.lodms.spi.load.Loader"/>
+    </bean>
+
+    <bean id="jobService" class="at.punkt.lodms.web.ETLJobService" init-method="loadJobs" destroy-method="persistJobs">
+        <property name="persistPath" value="${lodms.home}"/>
+    </bean>
+
+    <task:scheduler id="etlJobScheduler" pool-size="10" />
+
+    <bean id="repository" class="org.openrdf.repository.sail.SailRepository" init-method="initialize" destroy-method="shutDown">
+        <constructor-arg>
+            <bean class="org.openrdf.sail.memory.MemoryStore"/>
+        </constructor-arg>
+    </bean>
+</beans>

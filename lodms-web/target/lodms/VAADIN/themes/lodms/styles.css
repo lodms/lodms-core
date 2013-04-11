@@ -1,0 +1,50 @@
+/*
+    Document   : styles.css
+    Created on : Sep 17, 2011, 10:03:53 AM
+    Author     : breed
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import "../reindeer/styles.css";
+
+.lodms-component-error {
+    background: red;
+    text-align: center;
+}
+
+.lodms-component-success {
+    background: lawngreen;
+    text-align: center;
+}
+
+.lodms-component-warn {
+    background: gold;
+    text-align: center;
+}
+
+.lodms-event-error {
+    background: red;
+}
+
+.lodms-config-info {
+    background-image: url(../runo/icons/16/ok.png);
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-color: #FED;
+    padding: 5px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.v-caption-lodms-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    padding: 8px;
+}
