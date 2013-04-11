@@ -9,8 +9,6 @@
     <modules>
         <module>lodms-spi</module>
         <module>lodms-web-integration</module>
-        <module>lodms-impl</module>
-        <module>lodms-any23-connector</module>
         <module>lodms-web</module>
   </modules>
 
