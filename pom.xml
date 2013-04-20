@@ -37,14 +37,6 @@
 
     <repositories>
         <repository>
-            <id>aduna-releases</id>
-            <name>Aduna Maven Repository - Releases</name>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://repo.aduna-software.org/maven2/releases</url>
-        </repository>
-        <repository>
             <id>com.springsource.repository.bundles.release</id>
             <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
             <url>http://repository.springsource.com/maven/bundles/release</url>
@@ -60,7 +52,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -71,7 +63,7 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sesame.version>2.6.9</sesame.version>
+        <sesame.version>2.6.10</sesame.version>
         <spring.version>3.1.2.RELEASE</spring.version>
     </properties>
 </project>
