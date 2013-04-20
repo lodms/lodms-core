@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 /**
  * Components implementing this interface provide a {@link ConfigDialog} through
- * which they can be configured.<br/>
+ * which they can be configured.
  * This is far more flexible than implementing {@link ConfigBeanProvider} since the dialog
- * can be customized.<br/>
- * <br/>
+ * can be customized.
  * 
  * @author Alex Kreiser (akreiser@gmail.com)
  */

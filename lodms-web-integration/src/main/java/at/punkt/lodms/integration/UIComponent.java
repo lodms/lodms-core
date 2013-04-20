@@ -4,7 +4,7 @@ import com.vaadin.Application;
 import com.vaadin.terminal.Resource;
 
 /**
- * Represents a component that can be rendered in the LODMS Web Application.<br/>
+ * Represents a component that can be rendered in the LODMS Web Application.
  * All components that should be available for use in the Web GUI have to implement
  * this interface.
  * 

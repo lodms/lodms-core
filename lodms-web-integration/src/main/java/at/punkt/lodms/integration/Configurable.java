@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Components that need to be configured in the Web GUI have to implement this interface,
- * either through {@link ConfigBeanProvider} or {@link ConfigDialogProvider>}.<br/>
- * <strong>IMPORTANT: <br/>
+ * either through {@link ConfigBeanProvider} or {@link ConfigDialogProvider>}.
+ * IMPORTANT:
  * The config object and all nested objects have to implement {@link Serializable}!
- * </strong><br/>
+ * 
  * Otherwise ETLJobs using this component cannot be persisted between application restarts!
  * 
  * @see ConfigBeanProvider
