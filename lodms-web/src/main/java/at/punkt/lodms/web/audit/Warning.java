@@ -6,7 +6,7 @@ package at.punkt.lodms.web.audit;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public class Warning {
     

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public class BeanItemContainerSorter implements ItemSorter {
 

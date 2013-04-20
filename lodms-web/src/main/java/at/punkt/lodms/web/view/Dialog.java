@@ -8,7 +8,7 @@ import com.vaadin.ui.Component;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public interface Dialog extends Component {
     

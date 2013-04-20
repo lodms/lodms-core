@@ -6,7 +6,7 @@ package at.punkt.lodms.web;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public interface ConfigSuccessHandler {
     

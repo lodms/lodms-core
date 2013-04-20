@@ -16,8 +16,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>6.8.3</vaadin.version>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+        <vaadin.version>6.8.9</vaadin.version>
     </properties>
 
     <repositories>

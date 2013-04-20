@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 @Component
 public class Log4jTransformListener implements ApplicationListener<TransformEvent> {

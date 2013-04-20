@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 @Component
 @Scope("session")

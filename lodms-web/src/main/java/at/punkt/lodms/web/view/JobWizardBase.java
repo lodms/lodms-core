@@ -30,7 +30,7 @@ import org.springframework.scheduling.support.CronTrigger;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public abstract class JobWizardBase extends VerticalLayout implements Dialog {
 

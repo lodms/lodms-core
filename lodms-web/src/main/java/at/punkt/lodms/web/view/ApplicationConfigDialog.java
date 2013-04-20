@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public class ApplicationConfigDialog extends Window {
 

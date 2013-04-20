@@ -6,7 +6,7 @@ package at.punkt.lodms.web.view;
 
 /**
  *
- * @author kreisera
+ * @author Alex Kreiser (akreiser@gmail.com)
  */
 public interface DialogCloseHandler {
     
