@@ -3,7 +3,6 @@ package at.punkt.lodms.integration;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import java.io.Serializable;
 
 /**
  * A custom configuration dialog that used to configure a component through the web GUI.<br/>
@@ -20,5 +19,5 @@ public interface ConfigDialog extends Component {
      * 
      * @return 
      */
-    public Serializable getConfig();
+    public Object getConfig();
 }

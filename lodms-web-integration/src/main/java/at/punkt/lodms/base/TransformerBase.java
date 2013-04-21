@@ -7,12 +7,11 @@ package at.punkt.lodms.base;
 import at.punkt.lodms.integration.ConfigurableBase;
 import at.punkt.lodms.integration.UIComponent;
 import at.punkt.lodms.spi.transform.Transformer;
-import java.io.Serializable;
 
 /**
  *
  * @author kreisera
  */
-public abstract class TransformerBase<T extends Serializable> extends ConfigurableBase<T> implements Transformer, UIComponent {
+public abstract class TransformerBase<T> extends ConfigurableBase<T> implements Transformer, UIComponent {
 
 }

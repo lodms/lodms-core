@@ -1,14 +1,13 @@
 package at.punkt.lodms.integration;
 
 import at.punkt.lodms.Disableable;
-import java.io.Serializable;
 
 /**
  * Convenience base class for {@link Configurable}s, storing the config object.
  * 
  * @author Alex Kreiser (akreiser@gmail.com)
  */
-public abstract class ConfigurableBase<T extends Serializable> implements Configurable<T>, Disableable {
+public abstract class ConfigurableBase<T> implements Configurable<T>, Disableable {
 
     protected T config;
     protected boolean disabled;

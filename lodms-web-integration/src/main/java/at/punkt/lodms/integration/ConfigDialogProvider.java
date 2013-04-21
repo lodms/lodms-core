@@ -1,7 +1,5 @@
 package at.punkt.lodms.integration;
 
-import java.io.Serializable;
-
 /**
  * Components implementing this interface provide a {@link ConfigDialog} through
  * which they can be configured.
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * 
  * @author Alex Kreiser (akreiser@gmail.com)
  */
-public interface ConfigDialogProvider<T extends Serializable> extends ConfigBeanProvider<T> {
+public interface ConfigDialogProvider<T> extends ConfigBeanProvider<T> {
     
     /**
      * Returns a new {@link ConfigDialog} instance that will be embedded in the 

@@ -9,8 +9,10 @@
     </parent>
     <groupId>at.punkt.lodms</groupId>
     <artifactId>lodms-web-integration</artifactId>
-    <name>lodms-web-integration</name>
-    <url>http://maven.apache.org</url>
+    
+    <name>LODMS Web Integration</name>
+    <url>https://github.com/lodms/lodms-core</url>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <vaadin.version>6.6.4</vaadin.version>
