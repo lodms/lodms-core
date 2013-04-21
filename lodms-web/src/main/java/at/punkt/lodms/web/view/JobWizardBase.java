@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package at.punkt.lodms.web.view;
 
 import at.punkt.lodms.integration.ConfigBeanProvider;
@@ -13,11 +12,13 @@ import at.punkt.lodms.spi.load.Loader;
 import at.punkt.lodms.spi.transform.Transformer;
 import at.punkt.lodms.util.BeanItemContainerSorter;
 import at.punkt.lodms.web.*;
-import com.vaadin.data.Container.Sortable;
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.ItemSorter;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.FocusEvent;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
 import java.util.Arrays;
@@ -74,7 +75,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         setExpandRatio(tabsheet, 0.75f);
         setSizeFull();
     }
-    
+
     private <T> void initGenericDialog(Class<T> type, HorizontalSplitPanel dialog, List<T> components, final List<T> jobComponents, final BeanItemContainer<T> selected) {
         dialog.setSizeFull();
         final VerticalLayout availableComponents = new VerticalLayout();
@@ -102,14 +103,12 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
             Button addButton = new Button("Add");
             compLayout.addComponent(addButton);
             addButton.addListener(new Button.ClickListener() {
-
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
                         final T instance = (T) component.getClass().newInstance();
                         if (instance instanceof ConfigDialogProvider) {
                             application.displayConfigWindow((ConfigDialogProvider) instance, new ConfigSuccessHandler() {
-
                                 @Override
                                 public void configured() {
                                     jobComponents.add(instance);
@@ -118,7 +117,6 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
                             }, null);
                         } else if (instance instanceof ConfigBeanProvider) {
                             application.displayConfigWindow((ConfigBeanProvider) instance, new ConfigSuccessHandler() {
-
                                 @Override
                                 public void configured() {
                                     jobComponents.add(instance);
@@ -147,7 +145,6 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         jobDialog.setMargin(true);
         final Form form = new Form();
         form.setFormFieldFactory(new DefaultFieldFactory() {
-
             @Override
             public Field createField(Item item, Object propertyId, Component uiContext) {
                 if (propertyId.equals("id")) {
@@ -167,17 +164,30 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
                     field.setRows(3);
                     field.setDescription("A more detailed description of the job.");
                     return field;
+                } else if (propertyId.equals("scheduled")) {
+                    CheckBox field = new CheckBox("Scheduled");
+                    field.setImmediate(true);
+                    return field;
                 } else if (propertyId.equals("interval")) {
-                    TextField field = new TextField("Execution Interval");
+                    final TextField field = new TextField("Execution Interval");
                     field.setDescription("A cron expression that is used to schedule and execute the job.");
                     field.setRequiredError("Must be a valid cron expression!");
+                    field.setImmediate(true);
+                    field.addListener(new FieldEvents.FocusListener() {
+
+                        @Override
+                        public void focus(FocusEvent event) {
+                            showIntervalDialog(form);
+                        }
+                    });
                     return field;
                 }
                 return super.createField(item, propertyId, uiContext);
             }
         });
-        if (job.getMetadata() == null)
+        if (job.getMetadata() == null) {
             job.setMetadata(new ETLJobMetadata());
+        }
         final ETLJobMetadata metadata = job.getMetadata();
         BeanItem<ETLJobMetadata> beanItem = new BeanItem<ETLJobMetadata>(metadata, Arrays.asList("name", "description", "scheduled", "interval"));
         form.setItemDataSource(beanItem);
@@ -187,13 +197,12 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         buttons.setSpacing(true);
         buttons.addComponent(saveJob);
         saveJob.addListener(new Button.ClickListener() {
-
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                if (((CheckBox)form.getField("scheduled")).booleanValue()) {
-                    ((TextField)form.getField("interval")).setRequired(true);
+                if (((CheckBox) form.getField("scheduled")).booleanValue()) {
+                    ((TextField) form.getField("interval")).setRequired(true);
                 } else {
-                    ((TextField)form.getField("interval")).setRequired(false);
+                    ((TextField) form.getField("interval")).setRequired(false);
                 }
                 if (selectedExtractors.size() == 0) {
                     getWindow().showNotification("Please configure at least 1 extractor!", Window.Notification.TYPE_ERROR_MESSAGE);
@@ -203,8 +212,9 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
                 }
                 form.commit();
                 job.getMetadata().setCreated(new Date());
-                if (job.getFuture() != null)
+                if (job.getFuture() != null) {
                     job.getFuture().cancel(true);
+                }
                 if (job.getMetadata().isScheduled()) {
                     job.setFuture(scheduler.schedule(job.getPipeline(), new CronTrigger(job.getMetadata().getInterval())));
                 }
@@ -222,7 +232,6 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         });
         Button cancel = new Button("Cancel");
         cancel.addListener(new Button.ClickListener() {
-
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 closeHandler.close();
@@ -231,7 +240,18 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         buttons.addComponent(cancel);
         jobDialog.addComponent(buttons);
     }
-    
+
+    private void showIntervalDialog(final Form form) {
+        final IntervalDialog intervalDialog = new IntervalDialog();
+        intervalDialog.setDialogCloseHandler(new DialogCloseHandler() {
+            @Override
+            public void close() {
+                ((TextField) form.getField("interval")).setValue(intervalDialog.getCronExpression());
+            }
+        });
+        this.getApplication().getMainWindow().addWindow(intervalDialog);
+    }
+
     @Override
     public void setDialogCloseHandler(DialogCloseHandler handler) {
         this.closeHandler = handler;

@@ -9,12 +9,13 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Alex Kreiser
  */
-@org.springframework.stereotype.Component
+@Component
 @Scope("prototype")
 public class NewJobWizard extends JobWizardBase {
 
