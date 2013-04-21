@@ -23,7 +23,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Window.Notification;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.Repository;
@@ -187,7 +186,7 @@ public class LodmsApplication extends Application {
         configWindow.setWidth("850px");
     }
 
-    public void displayConfigWindow(final ConfigBeanProvider configBeanProvider, final ConfigSuccessHandler handler, Serializable config) {
+    public void displayConfigWindow(final ConfigBeanProvider configBeanProvider, final ConfigSuccessHandler handler, Object config) {
         configWindow.removeAllComponents();
         configWindow.setCaption("Configuration: " + ((UIComponent) configBeanProvider).getName());
         VerticalLayout configWinLayout = new VerticalLayout();
@@ -206,7 +205,7 @@ public class LodmsApplication extends Application {
             @Override
             public void buttonClick(ClickEvent event) {
                 try {
-                    configBeanProvider.configure((Serializable) beanItem.getBean());
+                    configBeanProvider.configure(beanItem.getBean());
                     handler.configured();
                     getMainWindow().removeWindow(configWindow);
                 } catch (ConfigurationException ex) {
@@ -224,7 +223,7 @@ public class LodmsApplication extends Application {
         getMainWindow().addWindow(configWindow);
     }
 
-    public void displayConfigWindow(final ConfigDialogProvider configDialogProvider, final ConfigSuccessHandler handler, Serializable config) {
+    public void displayConfigWindow(final ConfigDialogProvider configDialogProvider, final ConfigSuccessHandler handler, Object config) {
         configWindow.removeAllComponents();
         configWindow.setCaption("Configuration: " + ((UIComponent) configDialogProvider).getName());
         VerticalLayout configWinLayout = new VerticalLayout();
@@ -241,7 +240,7 @@ public class LodmsApplication extends Application {
             @Override
             public void buttonClick(ClickEvent event) {
                 try {
-                    Serializable config = dialog.getConfig();
+                    Object config = dialog.getConfig();
                     configDialogProvider.configure(config);
                     handler.configured();
                     getMainWindow().removeWindow(configWindow);

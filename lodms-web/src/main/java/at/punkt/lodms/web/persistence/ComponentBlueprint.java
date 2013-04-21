@@ -4,24 +4,22 @@
  */
 package at.punkt.lodms.web.persistence;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Alex Kreiser
  */
-public class ComponentBlueprint<T> implements Serializable {
+public class ComponentBlueprint<T> {
     
     private Class<? extends T> type;
-    private Serializable config;
+    private Object config;
     private boolean disabled;
 
-    public ComponentBlueprint(Class<? extends T> type, Serializable config) {
+    public ComponentBlueprint(Class<? extends T> type, Object config) {
         this.type = type;
         this.config = config;
     }
     
-    public Serializable getConfig() {
+    public Object getConfig() {
         return config;
     }
 

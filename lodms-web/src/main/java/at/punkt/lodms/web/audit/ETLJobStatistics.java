@@ -7,7 +7,6 @@ package at.punkt.lodms.web.audit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.openrdf.model.URI;
 
 /**
  *

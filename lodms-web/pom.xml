@@ -11,8 +11,9 @@
     <artifactId>lodms-web</artifactId>
     <packaging>war</packaging>
 
-    <name>lodms-web</name>
-
+    <name>LODMS Web Application</name>
+    <url>https://github.com/lodms/lodms-core</url>
+    
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,6 +73,16 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lodms-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lodms-poolparty</artifactId>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

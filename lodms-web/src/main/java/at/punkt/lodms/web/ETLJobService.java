@@ -17,7 +17,6 @@ import com.thoughtworks.xstream.XStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -117,7 +116,7 @@ public class ETLJobService {
                 ETLPipeline pipeline = job.getPipeline();
                 blueprint.setPipelineId(pipeline.getId());
                 for (Extractor extractor : pipeline.getExtractors()) {
-                    Serializable config = null;
+                    Object config = null;
                     if (extractor instanceof Configurable) {
                         config = ((Configurable) extractor).getConfig();
                     }
@@ -128,7 +127,7 @@ public class ETLJobService {
                     blueprint.getExtractors().add(comp);
                 }
                 for (Transformer transformer : pipeline.getTransformers()) {
-                    Serializable config = null;
+                    Object config = null;
                     if (transformer instanceof Configurable) {
                         config = ((Configurable) transformer).getConfig();
                     }
@@ -139,7 +138,7 @@ public class ETLJobService {
                     blueprint.getTransformers().add(comp);
                 }
                 for (Loader loader : pipeline.getLoaders()) {
-                    Serializable config = null;
+                    Object config = null;
                     if (loader instanceof Configurable) {
                         config = ((Configurable) loader).getConfig();
                     }

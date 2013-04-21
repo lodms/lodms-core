@@ -8,7 +8,6 @@ import at.punkt.lodms.spi.extract.Extractor;
 import at.punkt.lodms.spi.load.Loader;
 import at.punkt.lodms.spi.transform.Transformer;
 import at.punkt.lodms.web.ETLJobMetadata;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  *
  * @author Alex Kreiser
  */
-public class ETLJobBlueprint implements Serializable {
+public class ETLJobBlueprint {
 
     private final String id;
     private ETLJobMetadata metadata;
