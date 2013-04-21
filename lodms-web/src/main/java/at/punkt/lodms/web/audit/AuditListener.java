@@ -26,20 +26,25 @@ public class AuditListener implements ApplicationListener<ETLEvent> {
     private AuditService service;
 
     public void onPipelineEvent(PipelineEvent e) {
-        if (e instanceof PipelineCompletedEvent || e instanceof PipelineAbortedEvent)
+        if (e instanceof PipelineCompletedEvent || e instanceof PipelineAbortedEvent) {
             service.addPipelineEvent(e);
+        }
     }
 
     @Override
     public void onApplicationEvent(ETLEvent e) {
-        if (e instanceof PipelineEvent)
+        if (e instanceof PipelineEvent) {
             onPipelineEvent((PipelineEvent)e);
-        else if (e instanceof ExtractEvent)
+        }
+        else if (e instanceof ExtractEvent) {
             onExtractEvent((ExtractEvent)e);
-        else if (e instanceof TransformEvent)
+        }
+        else if (e instanceof TransformEvent) {
             onTransformEvent((TransformEvent)e);
-        else if (e instanceof LoadEvent)
+        }
+        else if (e instanceof LoadEvent) {
             onLoadEvent((LoadEvent)e);
+        }
     }
 
     private void onExtractEvent(ExtractEvent extractEvent) {

@@ -7,8 +7,8 @@ package at.punkt.lodms.web.event;
 import at.punkt.lodms.ETLPipeline;
 import at.punkt.lodms.PipelineEvent;
 import at.punkt.lodms.PipelineStartedEvent;
-import at.punkt.lodms.web.ETLJob;
-import at.punkt.lodms.web.ETLJobService;
+import at.punkt.lodms.web.Job;
+import at.punkt.lodms.web.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class RunningJobsUpdater implements ApplicationListener<PipelineEvent> {
 
     @Autowired
-    private ETLJobService service;
+    private JobService service;
 
     @Override
     public void onApplicationEvent(PipelineEvent e) {
@@ -32,8 +32,8 @@ public class RunningJobsUpdater implements ApplicationListener<PipelineEvent> {
         }
     }
 
-    private ETLJob getJob(ETLPipeline pipeline) {
-        for (ETLJob job : service.getJobs()) {
+    private Job getJob(ETLPipeline pipeline) {
+        for (Job job : service.getJobs()) {
             if (job.getPipeline().equals(pipeline))
                 return job;
         }

@@ -7,7 +7,7 @@ package at.punkt.lodms.web.persistence;
 import at.punkt.lodms.spi.extract.Extractor;
 import at.punkt.lodms.spi.load.Loader;
 import at.punkt.lodms.spi.transform.Transformer;
-import at.punkt.lodms.web.ETLJobMetadata;
+import at.punkt.lodms.web.JobMetadata;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class ETLJobBlueprint {
 
     private final String id;
-    private ETLJobMetadata metadata;
+    private JobMetadata metadata;
     private String pipelineId;
     private List<ComponentBlueprint<Extractor>> extractors = new ArrayList<ComponentBlueprint<Extractor>>();
     private List<ComponentBlueprint<Transformer>> transformers = new ArrayList<ComponentBlueprint<Transformer>>();
@@ -32,11 +32,11 @@ public class ETLJobBlueprint {
         return id;
     }
 
-    public ETLJobMetadata getMetadata() {
+    public JobMetadata getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(ETLJobMetadata metadata) {
+    public void setMetadata(JobMetadata metadata) {
         this.metadata = metadata;
     }
 

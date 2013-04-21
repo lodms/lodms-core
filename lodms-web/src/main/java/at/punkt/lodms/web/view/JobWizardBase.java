@@ -4,6 +4,9 @@
  */
 package at.punkt.lodms.web.view;
 
+import at.punkt.lodms.web.dialog.Dialog;
+import at.punkt.lodms.web.dialog.DialogCloseHandler;
+import at.punkt.lodms.web.dialog.IntervalDialog;
 import at.punkt.lodms.integration.ConfigBeanProvider;
 import at.punkt.lodms.integration.ConfigDialogProvider;
 import at.punkt.lodms.integration.UIComponent;
@@ -37,7 +40,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
 
     private final Logger logger = Logger.getLogger(JobWizardBase.class);
     @Autowired(required = true)
-    protected ETLJobService jobService;
+    protected JobService jobService;
     @Autowired(required = true)
     protected LodmsApplication application;
     @Autowired(required = true)
@@ -52,7 +55,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
     protected BeanItemContainer<Extractor> selectedExtractors;
     protected BeanItemContainer<Transformer> selectedTransformers;
     protected BeanItemContainer<Loader> selectedLoaders;
-    protected ETLJob job;
+    protected Job job;
 
     public void init() {
         TabSheet tabsheet = new TabSheet();
@@ -140,7 +143,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         dialog.addComponent(new ConfiguredComponentTable(application, type, jobComponents, selected, true, true));
     }
 
-    private void initJobDialog(final ETLJob job) {
+    private void initJobDialog(final Job job) {
         jobDialog.setSpacing(true);
         jobDialog.setMargin(true);
         final Form form = new Form();
@@ -186,10 +189,10 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
             }
         });
         if (job.getMetadata() == null) {
-            job.setMetadata(new ETLJobMetadata());
+            job.setMetadata(new JobMetadata());
         }
-        final ETLJobMetadata metadata = job.getMetadata();
-        BeanItem<ETLJobMetadata> beanItem = new BeanItem<ETLJobMetadata>(metadata, Arrays.asList("name", "description", "scheduled", "interval"));
+        final JobMetadata metadata = job.getMetadata();
+        BeanItem<JobMetadata> beanItem = new BeanItem<JobMetadata>(metadata, Arrays.asList("name", "description", "scheduled", "interval"));
         form.setItemDataSource(beanItem);
         jobDialog.addComponent(form);
         Button saveJob = new Button("Save");

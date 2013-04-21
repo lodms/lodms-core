@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Alex Kreiser
  */
-public class ETLJobStatistics implements Serializable {
+public class JobStatistics implements Serializable {
     
     private final String id;
     private long executionCount;
@@ -33,7 +33,7 @@ public class ETLJobStatistics implements Serializable {
     
     private List<PipelineExecution> executions = new ArrayList<PipelineExecution>();
 
-    public ETLJobStatistics(String id) {
+    public JobStatistics(String id) {
         this.id = id;
     }
 

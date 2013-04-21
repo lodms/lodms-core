@@ -38,7 +38,7 @@
         <property name="serviceType" value="at.punkt.lodms.spi.load.Loader"/>
     </bean>
 
-    <bean id="jobService" class="at.punkt.lodms.web.ETLJobService" init-method="loadJobs" destroy-method="persistJobs">
+    <bean id="jobService" class="at.punkt.lodms.web.JobService" init-method="loadJobs" destroy-method="persistJobs">
         <property name="persistPath" value="${lodms.home}"/>
     </bean>
 

@@ -28,17 +28,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuditService {
 
-    Map<String, ETLJobStatistics> jobStatistics = new HashMap<String, ETLJobStatistics>();
+    Map<String, JobStatistics> jobStatistics = new HashMap<String, JobStatistics>();
     Map<String, Deque<PipelineEvent>> pipelineEvents = new HashMap<String, Deque<PipelineEvent>>();
     HashMap<String, List<ExtractEvent>> extractMap = new HashMap<String, List<ExtractEvent>>();
     HashMap<String, List<TransformEvent>> transformMap = new HashMap<String, List<TransformEvent>>();
     HashMap<String, List<LoadEvent>> loadMap = new HashMap<String, List<LoadEvent>>();
     private final int MAX_QUEUE_SIZE = 15;
 
-    public ETLJobStatistics getStatistics(String pipelineId) {
-        ETLJobStatistics stats = jobStatistics.get(pipelineId);
+    public JobStatistics getStatistics(String pipelineId) {
+        JobStatistics stats = jobStatistics.get(pipelineId);
         if (stats == null) {
-            stats = new ETLJobStatistics(pipelineId);
+            stats = new JobStatistics(pipelineId);
             jobStatistics.put(pipelineId, stats);
         }
         return stats;

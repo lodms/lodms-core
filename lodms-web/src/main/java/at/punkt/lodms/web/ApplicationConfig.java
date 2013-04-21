@@ -4,7 +4,7 @@
  */
 package at.punkt.lodms.web;
 
-import at.punkt.lodms.web.view.ApplicationConfigDialog;
+import at.punkt.lodms.web.dialog.ApplicationConfigDialog;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;

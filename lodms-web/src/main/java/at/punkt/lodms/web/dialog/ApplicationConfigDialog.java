@@ -3,18 +3,16 @@
  * and open the template in the editor.
  */
 
-package at.punkt.lodms.web.view;
+package at.punkt.lodms.web.dialog;
 
 import at.punkt.lodms.web.ApplicationConfig;
-import at.punkt.lodms.web.ETLJobService;
+import at.punkt.lodms.web.JobService;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.validator.AbstractStringValidator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
@@ -39,7 +37,7 @@ public class ApplicationConfigDialog extends Window {
         }
     }
 
-    public ApplicationConfigDialog(final ApplicationConfig appConfig, final ETLJobService jobService) {
+    public ApplicationConfigDialog(final ApplicationConfig appConfig, final JobService jobService) {
         super("LOD Management Suite Configuration");
         setModal(true);
         VerticalLayout layout = new VerticalLayout();

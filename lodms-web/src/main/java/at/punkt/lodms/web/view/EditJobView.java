@@ -4,7 +4,7 @@
  */
 package at.punkt.lodms.web.view;
 
-import at.punkt.lodms.web.ETLJob;
+import at.punkt.lodms.web.Job;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 
@@ -14,14 +14,14 @@ import org.springframework.context.annotation.Scope;
  */
 @org.springframework.stereotype.Component
 @Scope("prototype")
-public class EditJobWizard extends JobWizardBase {
+public class EditJobView extends JobWizardBase {
 
-    private final Logger logger = Logger.getLogger(EditJobWizard.class);
+    private final Logger logger = Logger.getLogger(EditJobView.class);
 
-    public EditJobWizard() {
+    public EditJobView() {
     }
 
-    public void setJob(ETLJob job) {
+    public void setJob(Job job) {
         this.job = job;
     }
 }

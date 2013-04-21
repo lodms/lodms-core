@@ -15,8 +15,8 @@ import at.punkt.lodms.spi.load.LoadEvent;
 import at.punkt.lodms.spi.load.LoadFailedEvent;
 import at.punkt.lodms.spi.transform.TransformEvent;
 import at.punkt.lodms.spi.transform.TransformFailedEvent;
-import at.punkt.lodms.web.ETLJob;
-import at.punkt.lodms.web.ETLJobService;
+import at.punkt.lodms.web.Job;
+import at.punkt.lodms.web.JobService;
 import at.punkt.lodms.web.audit.AuditService;
 import at.punkt.lodms.web.audit.Warning;
 import com.vaadin.data.util.BeanItemContainer;
@@ -57,15 +57,15 @@ public class ErrorReportingView extends HorizontalSplitPanel implements View {
     private GridLayout jobInfo = new GridLayout(1, 3);
     private final int PIPELINE_INFO = 1;
     private final int COMPONENTS_INFO = 2;
-    private BeanItemContainer<ETLJob> beanContainer;
+    private BeanItemContainer<Job> beanContainer;
     @Autowired
-    private ETLJobService jobService;
+    private JobService jobService;
     @Autowired
     private AuditService auditService;
 
     @PostConstruct
     public void init() {
-        beanContainer = new BeanItemContainer<ETLJob>(ETLJob.class, jobService.getJobs());
+        beanContainer = new BeanItemContainer<Job>(Job.class, jobService.getJobs());
         jobTable.setContainerDataSource(beanContainer);
         jobTable.setVisibleColumns(new String[]{"id"});
         jobTable.setColumnWidth("id", 225);
@@ -73,8 +73,8 @@ public class ErrorReportingView extends HorizontalSplitPanel implements View {
 
             @Override
             public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                Label label = new Label(((ETLJob) itemId).getMetadata().getName());
-                label.setDescription(((ETLJob) itemId).getMetadata().getDescription());
+                Label label = new Label(((Job) itemId).getMetadata().getName());
+                label.setDescription(((Job) itemId).getMetadata().getDescription());
                 return label;
             }
         });
@@ -84,7 +84,7 @@ public class ErrorReportingView extends HorizontalSplitPanel implements View {
 
             @Override
             public void itemClick(ItemClickEvent event) {
-                final ETLJob job = (ETLJob) event.getItemId();
+                final Job job = (Job) event.getItemId();
                 showPipelineInfo(job);
             }
         });
@@ -110,7 +110,7 @@ public class ErrorReportingView extends HorizontalSplitPanel implements View {
     public void postView() {
     }
 
-    private void showPipelineInfo(final ETLJob job) {
+    private void showPipelineInfo(final Job job) {
         jobInfo.removeAllComponents();
         if (auditService.getPipelineEvents(job.getPipeline().getId()) == null) {
             getWindow().showNotification("Job has not been executed yet.", Notification.TYPE_WARNING_MESSAGE);

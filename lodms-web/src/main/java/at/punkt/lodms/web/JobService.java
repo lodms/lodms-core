@@ -34,10 +34,10 @@ import org.springframework.scheduling.support.CronTrigger;
  *
  * @author Alex Kreiser
  */
-public class ETLJobService {
+public class JobService {
 
     private File persistPath = new File(".");
-    private Set<ETLJob> jobs = new HashSet<ETLJob>();
+    private Set<Job> jobs = new HashSet<Job>();
     @Autowired(required = true)
     private TaskScheduler scheduler;
     @Autowired
@@ -45,7 +45,7 @@ public class ETLJobService {
     @Autowired
     private Repository repository;
     private String PERSIST_FILE = "etl_jobs.xml";
-    private final Logger logger = Logger.getLogger(ETLJobService.class);
+    private final Logger logger = Logger.getLogger(JobService.class);
     private final XStream xstream = new XStream();
 
     @PostConstruct
@@ -55,7 +55,7 @@ public class ETLJobService {
             List<ETLJobBlueprint> blueprints = (List<ETLJobBlueprint>) xstream.fromXML(new FileInputStream(persistPath.getAbsolutePath() + File.separator + PERSIST_FILE));
 
             for (ETLJobBlueprint blueprint : blueprints) {
-                ETLJob job = new ETLJob(blueprint.getId());
+                Job job = new Job(blueprint.getId());
                 job.setMetadata(blueprint.getMetadata());
                 ETLPipeline pipeline = new ETLPipelineImpl(blueprint.getPipelineId(), context, repository);
                 job.setPipeline(pipeline);
@@ -110,7 +110,7 @@ public class ETLJobService {
         try {
             logger.info("Persisting [" + jobs.size() + "] jobs to filesystem");
             ArrayList<ETLJobBlueprint> blueprints = new ArrayList<ETLJobBlueprint>();
-            for (ETLJob job : jobs) {
+            for (Job job : jobs) {
                 ETLJobBlueprint blueprint = new ETLJobBlueprint(job.getId());
                 blueprint.setMetadata(job.getMetadata());
                 ETLPipeline pipeline = job.getPipeline();
@@ -164,11 +164,11 @@ public class ETLJobService {
         this.persistPath = persistPath;
     }
 
-    public Set<ETLJob> getJobs() {
+    public Set<Job> getJobs() {
         return jobs;
     }
 
-    public void addJob(ETLJob job) {
+    public void addJob(Job job) {
         jobs.add(job);
         try {
             persistJobs();
@@ -177,7 +177,7 @@ public class ETLJobService {
         }
     }
 
-    public void removeJob(ETLJob job) {
+    public void removeJob(Job job) {
         jobs.remove(job);
         try {
             persistJobs();

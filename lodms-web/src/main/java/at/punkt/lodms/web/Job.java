@@ -11,15 +11,15 @@ import java.util.concurrent.ScheduledFuture;
  *
  * @author Alex Kreiser
  */
-public class ETLJob {
+public class Job {
 
     private final String id;
-    private ETLJobMetadata metadata;
+    private JobMetadata metadata;
     private ScheduledFuture future;
     private ETLPipeline pipeline;
     private boolean running;
 
-    public ETLJob(String id) {
+    public Job(String id) {
         this.id = id;
     }
 
@@ -35,11 +35,11 @@ public class ETLJob {
         this.pipeline = pipeline;
     }
 
-    public ETLJobMetadata getMetadata() {
+    public JobMetadata getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(ETLJobMetadata metadata) {
+    public void setMetadata(JobMetadata metadata) {
         this.metadata = metadata;
     }
 
@@ -67,7 +67,7 @@ public class ETLJob {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ETLJob other = (ETLJob) obj;
+        final Job other = (Job) obj;
         if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
             return false;
         }

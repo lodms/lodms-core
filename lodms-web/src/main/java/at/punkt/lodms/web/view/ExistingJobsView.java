@@ -4,12 +4,13 @@
  */
 package at.punkt.lodms.web.view;
 
+import at.punkt.lodms.web.dialog.DialogCloseHandler;
 import at.punkt.lodms.spi.extract.Extractor;
 import at.punkt.lodms.spi.load.Loader;
 import at.punkt.lodms.spi.transform.Transformer;
-import at.punkt.lodms.web.ETLJob;
-import at.punkt.lodms.web.ETLJobMetadata;
-import at.punkt.lodms.web.ETLJobService;
+import at.punkt.lodms.web.Job;
+import at.punkt.lodms.web.JobMetadata;
+import at.punkt.lodms.web.JobService;
 import at.punkt.lodms.web.LodmsApplication;
 import at.punkt.lodms.web.event.RunningJobsUpdater;
 import com.vaadin.data.Item;
@@ -51,15 +52,15 @@ import org.vaadin.kim.countdownclock.CountdownClock;
  */
 @Component
 @Scope("session")
-public class ETLJobsView extends HorizontalSplitPanel implements View {
+public class ExistingJobsView extends HorizontalSplitPanel implements View {
 
     private Table jobTable = new Table("Scheduled Jobs");
     private VerticalLayout jobInfo = new VerticalLayout();
     @Autowired(required = true)
     private TaskScheduler scheduler;
-    private BeanItemContainer<ETLJob> beanContainer;
+    private BeanItemContainer<Job> beanContainer;
     @Autowired
-    private ETLJobService jobService;
+    private JobService jobService;
     @Autowired
     private ApplicationContext context;
     @Autowired
@@ -84,28 +85,28 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
 
     @PostConstruct
     public void init() {
-        beanContainer = new BeanItemContainer<ETLJob>(ETLJob.class, jobService.getJobs());
+        beanContainer = new BeanItemContainer<Job>(Job.class, jobService.getJobs());
         jobTable.setContainerDataSource(beanContainer);
         jobTable.setVisibleColumns(new String[]{});
         jobTable.addGeneratedColumn("Name", new Table.ColumnGenerator() {
 
             @Override
             public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                return new Label(((ETLJob) itemId).getMetadata().getName());
+                return new Label(((Job) itemId).getMetadata().getName());
             }
         });
         jobTable.addGeneratedColumn("Interval", new Table.ColumnGenerator() {
 
             @Override
             public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                return new Label(((ETLJob) itemId).getMetadata().getInterval());
+                return new Label(((Job) itemId).getMetadata().getInterval());
             }
         });
         jobTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
 
             @Override
             public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                final ETLJob job = (ETLJob) itemId;
+                final Job job = (Job) itemId;
                 if (job.isRunning()) {
                     Embedded embedded = new Embedded("", new ThemeResource("ajax-loader.gif"));
                     embedded.setDescription("Running...");
@@ -125,7 +126,7 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
 
             @Override
             public com.vaadin.ui.Component generateCell(Table source, final Object itemId, Object columnId) {
-                final ETLJob job = (ETLJob) itemId;
+                final Job job = (Job) itemId;
                 if (job.getMetadata().isScheduled()) {
                     Button run = new Button("Cancel");
                     run.addListener(new Button.ClickListener() {
@@ -158,14 +159,14 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
             @Override
             public com.vaadin.ui.Component generateCell(Table source, final Object itemId, Object columnId) {
                 Button run = new Button("Run");
-                if (((ETLJob) itemId).isRunning()) {
+                if (((Job) itemId).isRunning()) {
                     run.setEnabled(false);
                 }
                 run.addListener(new Button.ClickListener() {
 
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        ((ETLJob) itemId).getPipeline().run();
+                        ((Job) itemId).getPipeline().run();
                         refreshJobTable();
                     }
                 });
@@ -178,16 +179,16 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
             @Override
             public com.vaadin.ui.Component generateCell(final Table source, final Object itemId, final Object columnId) {
                 Button delete = new Button("");
-                if (((ETLJob) itemId).isRunning()) {
+                if (((Job) itemId).isRunning()) {
                     delete.setEnabled(false);
                 }
                 delete.addListener(new Button.ClickListener() {
 
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        if (((ETLJob) itemId).getFuture() != null)
-                            ((ETLJob) itemId).getFuture().cancel(true);
-                        removeJob((ETLJob) itemId);
+                        if (((Job) itemId).getFuture() != null)
+                            ((Job) itemId).getFuture().cancel(true);
+                        removeJob((Job) itemId);
                         refreshJobTable();
                     }
                 });
@@ -209,7 +210,7 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
 
             @Override
             public void itemClick(ItemClickEvent event) {
-                ETLJob job = (ETLJob) event.getItemId();
+                Job job = (Job) event.getItemId();
                 displayInfo(job);
             }
         });
@@ -219,7 +220,7 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
         addComponent(jobInfo);
     }
 
-    private void removeJob(ETLJob job) {
+    private void removeJob(Job job) {
         jobService.removeJob(job);
         beanContainer.removeItem(job);
     }
@@ -240,23 +241,23 @@ public class ETLJobsView extends HorizontalSplitPanel implements View {
     public void postView() {
     }
 
-    private void displayInfo(final ETLJob job) {
+    private void displayInfo(final Job job) {
         jobInfo.removeAllComponents();
         jobInfo.setSizeFull();
         Form jobDetails = new Form();
-        BeanItem<ETLJobMetadata> item = new BeanItem<ETLJobMetadata>(job.getMetadata());
+        BeanItem<JobMetadata> item = new BeanItem<JobMetadata>(job.getMetadata());
         jobDetails.setFormFieldFactory(new ReadOnlyFieldFactory());
         jobDetails.setItemDataSource(item);
         jobDetails.setWidth(100, UNITS_PERCENTAGE);
         jobInfo.addComponent(jobDetails);
 
-        final ETLJobsView view = this;
+        final ExistingJobsView view = this;
         final LodmsApplication application = ((LodmsApplication) getApplication());
         Button edit = new Button("Edit Job", new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                EditJobWizard editWizard = context.getBean(EditJobWizard.class);
+                EditJobView editWizard = context.getBean(EditJobView.class);
                 editWizard.setJob(job);
                 editWizard.init();
                 editWizard.setDialogCloseHandler(new DialogCloseHandler() {

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Alex Kreiser
  */
-public class ETLJobMetadata implements Serializable {
+public class JobMetadata implements Serializable {
     
     private String name = "";
     private String description = "";

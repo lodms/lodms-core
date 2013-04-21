@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package at.punkt.lodms.web.view;
+package at.punkt.lodms.web.dialog;
 
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("session")
-public class AboutWindow extends Window {
+public class AboutDialog extends Window {
 
-    public AboutWindow() {
+    public AboutDialog() {
         super("About LOD Management Suite");
         Label aboutText = new Label("<div class=\"lodms_about\"><p>The Linked (Open) Data Management Suite is developed by the <a href=\"http://www.semantic-web.at\">Semantic Web Company</a> in the course of the <a href=\"http://lod2.eu\">LOD2</a> FP7 project.</p>" +
                                     "<p>It is a Java based Linked (Open) Data Management Suite to schedule and monitor required ETL: Extract - Transform - Load</br>jobs for smooth and efficient Linked (Open) Data Management for web-based Linked Open Data portals (LOD platforms)</br>as well as for sustainable Data Management and Data Integration usage inside of the enterprise / the organisation.</p>" +
