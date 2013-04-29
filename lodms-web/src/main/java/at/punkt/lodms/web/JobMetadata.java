@@ -12,12 +12,15 @@ import java.util.Date;
  */
 public class JobMetadata implements Serializable {
 
+  static public final String T_SCHEDULED = "scheduled";
+  static public final String T_CHAINED = "chained";
   private String name = "";
   private String description = "";
   private boolean scheduled;
   private String interval = "";
   private Date created = new Date();
   private String previousJobId = "";
+  private String scheduleType = T_SCHEDULED;
 
   public String getPreviousJobId() {
     return previousJobId;
@@ -25,6 +28,10 @@ public class JobMetadata implements Serializable {
 
   public void setPreviousJobId(String previousJobId) {
     this.previousJobId = previousJobId;
+  }
+
+  public boolean isChained() {
+    return !previousJobId.isEmpty();
   }
 
   public Date getCreated() {
@@ -65,5 +72,13 @@ public class JobMetadata implements Serializable {
 
   public void setScheduled(boolean scheduled) {
     this.scheduled = scheduled;
+  }
+
+  public String getScheduleType() {
+    return scheduleType;
+  }
+
+  public void setScheduleType(String scheduleType) {
+    this.scheduleType = scheduleType;
   }
 }
