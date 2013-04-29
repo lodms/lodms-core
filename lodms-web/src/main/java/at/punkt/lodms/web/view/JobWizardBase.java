@@ -21,6 +21,7 @@ import at.punkt.lodms.web.dialog.Dialog;
 import at.punkt.lodms.web.dialog.DialogCloseHandler;
 import at.punkt.lodms.web.dialog.IntervalDialog;
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.FieldEvents;
@@ -55,6 +56,7 @@ import java.util.List;
  * @author Alex Kreiser (akreiser@gmail.com)
  */
 public abstract class JobWizardBase extends VerticalLayout implements Dialog {
+
 
   private final Logger logger = Logger.getLogger(JobWizardBase.class);
   @Autowired(required = true)
@@ -195,6 +197,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         }
         else if (propertyId.equals("scheduled")) {
           CheckBox field = new CheckBox("Scheduled");
+          field.setVisible(job.getMetadata().getScheduleType() == JobMetadata.T_SCHEDULED);
           field.setImmediate(true);
           return field;
         }
@@ -202,6 +205,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
           final TextField field = new TextField("Execution Interval");
           field.setDescription("A cron expression that is used to schedule and execute the job.");
           field.setRequiredError("Must be a valid cron expression!");
+          field.setVisible(job.getMetadata().getScheduleType() == JobMetadata.T_SCHEDULED);
           field.setImmediate(true);
           field.addListener(new FieldEvents.FocusListener() {
 
@@ -214,7 +218,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
         }
         else if (propertyId.equals("previousJobId")) {
           final Select jobSelector = new Select("Execute after");
-
+          jobSelector.setVisible(job.getMetadata().getScheduleType() == JobMetadata.T_CHAINED);
           for (Job j : jobService.getJobs()) {
             if (!j.equals(job)) {
               Item i = jobSelector.addItem(j.getId());
@@ -224,6 +228,22 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
 
           return jobSelector;
         }
+        else if (propertyId.equals("scheduleType")) {
+          final Select jobTypeSelector = new Select("Schedule type");
+          jobTypeSelector.addItem(JobMetadata.T_SCHEDULED);
+          jobTypeSelector.addItem(JobMetadata.T_CHAINED);
+          jobTypeSelector.addListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+              if (event.getProperty().getValue() == null)
+                return;
+              toggleScheduleVisibility(form, (event.getProperty().getValue() == JobMetadata.T_SCHEDULED));
+            }
+
+          });
+          jobTypeSelector.setImmediate(true);
+          return jobTypeSelector;
+        }
         return super.createField(item, propertyId, uiContext);
       }
     });
@@ -231,7 +251,7 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
       job.setMetadata(new JobMetadata());
     }
     final JobMetadata metadata = job.getMetadata();
-    BeanItem<JobMetadata> beanItem = new BeanItem<JobMetadata>(metadata, Arrays.asList("name", "description", "scheduled", "interval", "previousJobId"));
+    BeanItem<JobMetadata> beanItem = new BeanItem<JobMetadata>(metadata, Arrays.asList("name", "description", "scheduleType", "scheduled", "interval", "previousJobId"));
     form.setItemDataSource(beanItem);
     jobDialog.addComponent(form);
     Button saveJob = new Button("Save");
@@ -297,6 +317,15 @@ public abstract class JobWizardBase extends VerticalLayout implements Dialog {
       }
     });
     this.getApplication().getMainWindow().addWindow(intervalDialog);
+  }
+
+  private void toggleScheduleVisibility(final Form form, boolean scheduled) {
+    if (form.getField("interval") != null)
+      form.getField("interval").setVisible(scheduled);
+    if (form.getField("scheduled") != null)
+      form.getField("scheduled").setVisible(scheduled);
+    if (form.getField("previousJobId") != null)
+      form.getField("previousJobId").setVisible(!scheduled);
   }
 
   @Override

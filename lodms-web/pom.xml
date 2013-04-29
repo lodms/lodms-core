@@ -18,6 +18,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <vaadin.version>6.8.9</vaadin.version>
+        <project.version>1.0.0</project.version>
     </properties>
 
     <repositories>
@@ -28,6 +29,16 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lodms-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>lodms-any23-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>lodms-spi</artifactId>
