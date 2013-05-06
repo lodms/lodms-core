@@ -7,7 +7,7 @@ We encourage continuous, self sustainable development supported by both the open
 community and commercial stake holders. This way both parties (community and commercial users)
 profit from each other by code and financial resources for core development.
 Therefore we adopted a dual licensing approach for LOD Management Suite. All contributor need to
-agree and sign the CLA (!!!link to be done!!!), if they want to push in
+agree and sign the CLA (https://github.com/lodms/lodms-core/blob/master/LODMS_contribution_agreement.pdf), if they want to push in
 the master repository of LOD Management Suite.
 
 Open source Software License
