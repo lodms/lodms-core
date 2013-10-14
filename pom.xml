@@ -65,5 +65,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sesame.version>2.6.10</sesame.version>
         <spring.version>3.1.2.RELEASE</spring.version>
+        <vaadin.version>6.8.9</vaadin.version>
     </properties>
 </project>

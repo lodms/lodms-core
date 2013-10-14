@@ -39,13 +39,13 @@
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
             <artifactId>sesame-repository-sail</artifactId>
-            <version>2.6.10</version>
+            <version>${sesame.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
             <artifactId>sesame-sail-memory</artifactId>
-            <version>2.6.10</version>
+            <version>${sesame.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
