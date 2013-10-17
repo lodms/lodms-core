@@ -4,7 +4,6 @@
  */
 package at.punkt.lodms.web.view;
 
-import at.punkt.lodms.web.dialog.DialogCloseHandler;
 import at.punkt.lodms.spi.extract.Extractor;
 import at.punkt.lodms.spi.load.Loader;
 import at.punkt.lodms.spi.transform.Transformer;
@@ -12,6 +11,7 @@ import at.punkt.lodms.web.Job;
 import at.punkt.lodms.web.JobMetadata;
 import at.punkt.lodms.web.JobService;
 import at.punkt.lodms.web.LodmsApplication;
+import at.punkt.lodms.web.dialog.DialogCloseHandler;
 import at.punkt.lodms.web.event.RunningJobsUpdater;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
@@ -27,7 +27,6 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
@@ -35,8 +34,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
-import java.util.Date;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -45,6 +42,9 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Component;
 import org.vaadin.kim.countdownclock.CountdownClock;
+
+import javax.annotation.PostConstruct;
+import java.util.Date;
 
 /**
  *
@@ -86,22 +86,12 @@ public class ExistingJobsView extends HorizontalSplitPanel implements View {
     @PostConstruct
     public void init() {
         beanContainer = new BeanItemContainer<Job>(Job.class, jobService.getJobs());
+        beanContainer.addNestedContainerProperty("metadata.name");
+        beanContainer.addNestedContainerProperty("metadata.interval");
         jobTable.setContainerDataSource(beanContainer);
-        jobTable.setVisibleColumns(new String[]{});
-        jobTable.addGeneratedColumn("Name", new Table.ColumnGenerator() {
-
-            @Override
-            public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                return new Label(((Job) itemId).getMetadata().getName());
-            }
-        });
-        jobTable.addGeneratedColumn("Interval", new Table.ColumnGenerator() {
-
-            @Override
-            public com.vaadin.ui.Component generateCell(Table source, Object itemId, Object columnId) {
-                return new Label(((Job) itemId).getMetadata().getInterval());
-            }
-        });
+        jobTable.setColumnHeader("metadata.name","Name");
+        jobTable.setColumnHeader("metadata.interval","Interval");
+        jobTable.setVisibleColumns(new String[]{"metadata.name","metadata.interval"});
         jobTable.addGeneratedColumn("Status", new Table.ColumnGenerator() {
 
             @Override
@@ -233,6 +223,7 @@ public class ExistingJobsView extends HorizontalSplitPanel implements View {
     private void refreshJobTable() {
         beanContainer.removeAllItems();
         beanContainer.addAll(jobService.getJobs());
+        jobTable.sort(new Object[] {"metadata.name"},new boolean[] {true});
         jobTable.select(jobTable.getNullSelectionItemId());
         jobInfo.removeAllComponents();
     }
